@@ -1,0 +1,46 @@
+class ProductManager:
+    def __init__(self):
+        self.products = {}  # 商品信息存储
+
+    def add_product(self, product_id, name, price, stock):
+        if product_id in self.products:
+            print(f"商品ID {product_id} 已存在。")
+            return False
+        self.products[product_id] = {'name': name, 'price': price, 'stock': stock}
+        print(f"商品 {name} 已添加。")
+        return True
+
+    def edit_product(self, product_id, name=None, price=None, stock=None):
+        if product_id not in self.products:
+            print(f"商品ID {product_id} 不存在。")
+            return False
+        if name:
+            self.products[product_id]['name'] = name
+        if price:
+            self.products[product_id]['price'] = price
+        if stock:
+            self.products[product_id]['stock'] = stock
+        print(f"商品ID {product_id} 的信息已更新。")
+        return True
+
+    def delete_product(self, product_id):
+        if product_id in self.products:
+            del self.products[product_id]
+            print(f"商品ID {product_id} 已删除。")
+            return True
+        else:
+            print(f"商品ID {product_id} 不存在。")
+            return False
+
+    def list_products(self):
+        for product_id, info in self.products.items():
+            print(f"商品ID: {product_id}, 名称: {info['name']}, 价格: {info['price']}, 库存: {info['stock']}")
+
+    def update_stock(self, product_id, quantity):
+        if product_id in self.products:
+            self.products[product_id]['stock'] += quantity
+            print(f"商品ID {product_id} 的库存已更新。")
+            return True
+        else:
+            print(f"商品ID {product_id} 不存在。")
+            return False
