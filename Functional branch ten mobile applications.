@@ -1,0 +1,48 @@
+ 
+# app.py
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+# 假设这是与网站同步的数据
+data = {
+    'items': [
+        {'id': 1, 'name': 'Item 1', 'description': 'Description 1'},
+        {'id': 2, 'name': 'Item 2', 'description': 'Description 2'},
+        # 更多项目...
+    ]
+}
+
+@app.route('/api/items', methods=['GET'])
+def get_items():
+    return jsonify(data)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+  
+# main.py
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+import requests
+
+class MobileApp(App):
+    def build(self):
+        layout = BoxLayout(orientation='vertical')
+        self.items_label = Label(text='Loading items...')
+        layout.add_widget(self.items_label)
+        self.load_items()
+        return layout
+
+    def load_items(self):
+        try:
+            response = requests.get('http://localhost:5000/api/items')
+            data = response.json()
+            items_text = '\n'.join([f'{item["name"]}: {item["description"]}' for item in data['items']])
+            self.items_label.text = items_text
+        except Exception as e:
+            self.items_label.text = f'Error: {str(e)}'
+
+if __name__ == '__main__':
+    MobileApp().run()
+ 
