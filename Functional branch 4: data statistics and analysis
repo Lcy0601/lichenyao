@@ -1,0 +1,46 @@
+import pandas as pd
+from collections import Counter
+
+# 假设的销售数据
+sales_data = [
+    {'order_id': 'O001', 'user_id': 'U001', 'amount': 150.0, 'product': 'Product A', 'date': '2023-10-01'},
+    {'order_id': 'O002', 'user_id': 'U002', 'amount': 200.0, 'product': 'Product B', 'date': '2023-10-01'},
+    {'order_id': 'O003', 'user_id': 'U001', 'amount': 250.0, 'product': 'Product C', 'date': '2023-10-02'},
+    {'order_id': 'O004', 'user_id': 'U003', 'amount': 300.0, 'product': 'Product A', 'date': '2023-10-03'},
+    {'order_id': 'O005', 'user_id': 'U002', 'amount': 100.0, 'product': 'Product B', 'date': '2023-10-03'},
+    # 更多销售数据...
+]
+
+# 假设的用户行为数据
+user_behavior = [
+    {'user_id': 'U001', 'action': 'view', 'date': '2023-10-01'},
+    {'user_id': 'U002', 'action': 'click', 'date': '2023-10-01'},
+    {'user_id': 'U001', 'action': 'click', 'date': '2023-10-02'},
+    {'user_id': 'U003', 'action': 'click', 'date': '2023-10-03'},
+    {'user_id': 'U002', 'action': 'back', 'date': '2023-10-03'},
+    # 更多用户行为数据...
+]
+
+# 将数据转换为DataFrame
+sales_df = pd.DataFrame(sales_data)
+behavior_df = pd.DataFrame(user_behavior)
+
+# 销售数据统计
+def analyze_sales(dataframe):
+    total_sales = dataframe['amount'].sum()
+    avg_sales = dataframe['amount'].mean()
+    most_sold_product = dataframe.groupby('product')['amount'].sum().idxmax()
+    print(f"总销售额: {total_sales}")
+    print(f"平均销售额: {avg_sales}")
+    print(f"最受欢迎的产品: {most_sold_product}")
+
+# 用户行为分析
+def analyze_user_behavior(dataframe):
+    actions_count = Counter(dataframe['action'])
+    most_common_action = actions_count.most_common(1)[0][0]
+    print(f"用户行为统计: {actions_count}")
+    print(f"最常见的用户行为: {most_common_action}")
+
+# 执行分析
+analyze_sales(sales_df)
+analyze_user_behavior(behavior_df)
