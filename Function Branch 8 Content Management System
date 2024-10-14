@@ -1,0 +1,62 @@
+ 
+class ContentManagementSystem:
+    def __init__(self):
+        # 初始化一个字典来存储页面内容
+        self.pages = {
+            'about_us': '',
+            'privacy_policy': '',
+            'terms_of_service': ''
+        }
+
+    def add_page(self, page_name, content):
+        if page_name in self.pages:
+            print(f"页面 '{page_name}' 已存在。")
+        else:
+            self.pages[page_name] = content
+            print(f"页面 '{page_name}' 已添加。")
+
+    def update_page(self, page_name, content):
+        if page_name in self.pages:
+            self.pages[page_name] = content
+            print(f"页面 '{page_name}' 已更新。")
+        else:
+            print(f"页面 '{page_name}' 不存在，无法更新。")
+
+    def view_page(self, page_name):
+        if page_name in self.pages:
+            print(f"页面内容：\n{self.pages[page_name]}")
+        else:
+            print(f"页面 '{page_name}' 不存在。")
+
+    def delete_page(self, page_name):
+        if page_name in self.pages:
+            del self.pages[page_name]
+            print(f"页面 '{page_name}' 已删除。")
+        else:
+            print(f"页面 '{page_name}' 不存在，无法删除。")
+
+    def list_pages(self):
+        print("可用页面：")
+        for page_name in self.pages:
+            print(page_name)
+
+# 创建内容管理系统实例
+cms = ContentManagementSystem()
+
+# 添加页面
+cms.add_page('about_us', '关于我们页面的内容。')
+cms.add_page('privacy_policy', '隐私政策页面的内容。')
+cms.add_page('terms_of_service', '服务条款页面的内容。')
+
+# 更新页面
+cms.update_page('about_us', '更新后的关于我们页面的内容。')
+
+# 查看页面
+cms.view_page('about_us')
+
+# 删除页面
+cms.delete_page('terms_of_service')
+
+# 列出所有页面
+cms.list_pages()
+ 
