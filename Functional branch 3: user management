@@ -1,0 +1,50 @@
+
+class UserManager:
+    def __init__(self):
+        self.users = {}  # 存储用户信息
+        self.feedbacks = {}  # 存储用户反馈
+
+    def add_user(self, user_id, user_name):
+        if user_id in self.users:
+            print(f"用户ID {user_id} 已存在。")
+            return False
+        self.users[user_id] = user_name
+        print(f"用户 {user_name} 已添加。")
+        return True
+
+    def list_users(self):
+        for user_id, user_name in self.users.items():
+            print(f"用户ID: {user_id}, 用户名: {user_name}")
+
+    def add_feedback(self, user_id, feedback):
+        if user_id not in self.users:
+            print(f"用户ID {user_id} 不存在。")
+            return False
+        if user_id not in self.feedbacks:
+            self.feedbacks[user_id] = []
+        self.feedbacks[user_id].append(feedback)
+        print(f"用户 {self.users[user_id]} 的反馈已记录。")
+        return True
+
+    def list_feedbacks(self):
+        for user_id, feedbacks in self.feedbacks.items():
+            print(f"用户ID: {user_id}, 用户名: {self.users[user_id]}, 反馈:")
+            for feedback in feedbacks:
+                print(f"  - {feedback}")
+
+    def add_rating(self, user_id, rating):
+        if user_id not in self.users:
+            print(f"用户ID {user_id} 不存在。")
+            return False
+        if user_id not in self.feedbacks:
+            self.feedbacks[user_id] = {'rating': []}
+        self.feedbacks[user_id]['rating'].append(rating)
+        print(f"用户 {self.users[user_id]} 的评价已记录。")
+        return True
+
+    def list_ratings(self):
+        for user_id, feedback in self.feedbacks.items():
+            if 'rating' in feedback and feedback['rating']:
+                print(f"用户ID: {user_id}, 用户名: {self.users[user_id]}, 评价:")
+                for rating in feedback['rating']:
+                    print(f"  - {rating}/5")
