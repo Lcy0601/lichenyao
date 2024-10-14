@@ -1,0 +1,54 @@
+ 
+class MultilingualSupport:
+    def __init__(self):
+        # 初始化一个字典来存储不同语言的文本
+        self.translations = {
+            'en': {
+                'greeting': 'Hello, welcome to our website!',
+                'farewell': 'Goodbye, thank you for visiting!'
+            },
+            'es': {
+                'greeting': '¡Hola, bienvenido a nuestro sitio web!',
+                'farewell': '¡Adiós, gracias por visitarnos!'
+            },
+            'fr': {
+                'greeting': 'Bonjour, bienvenue sur notre site!',
+                'farewell': 'Au revoir, merci d\'avoir visité!'
+            }
+        }
+
+    def set_language(self, language):
+        # 设置用户偏好的语言
+        if language in self.translations:
+            self.current_language = language
+            print(f"Language set to: {language}")
+        else:
+            print(f"Language '{language}' not supported. Defaulting to 'en'.")
+            self.current_language = 'en'
+
+    def get_translation(self, key):
+        # 根据当前语言获取翻译文本
+        return self.translations[self.current_language].get(key, f"Translation for '{key}' not found.")
+
+# 创建多语言支持实例
+multilingual = MultilingualSupport()
+
+# 设置用户的语言偏好
+user_language = 'es'  # 假设用户偏好西班牙语
+multilingual.set_language(user_language)
+
+# 获取并打印翻译文本
+print(multilingual.get_translation('greeting'))
+print(multilingual.get_translation('farewell'))
+
+# 尝试一个不存在的翻译键
+print(multilingual.get_translation('thank_you'))
+
+# 改变用户的语言偏好
+user_language = 'fr'  # 假设用户现在偏好法语
+multilingual.set_language(user_language)
+
+# 再次获取并打印翻译文本
+print(multilingual.get_translation('greeting'))
+print(multilingual.get_translation('farewell'))
+ 
