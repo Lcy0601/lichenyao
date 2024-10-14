@@ -1,0 +1,42 @@
+class Promotion:
+    def __init__(self, name, discount, start_date, end_date):
+        self.name = name
+        self.discount = discount
+        self.start_date = start_date
+        self.end_date = end_date
+        self.coupons = []
+
+    def add_coupon(self, coupon_code):
+        self.coupons.append(coupon_code)
+        print(f"优惠券 {coupon_code} 已添加到促销活动 {self.name}。")
+
+    def publish(self):
+        print(f"促销活动 {self.name} 已发布！开始日期：{self.start_date}，结束日期：{self.end_date}。")
+        print(f"可用优惠券：{', '.join(self.coupons)}")
+
+    def is_active(self, current_date):
+        return self.start_date <= current_date <= self.end_date
+
+class CouponManager:
+    def __init__(self):
+        self.promotions = []
+
+    def create_promotion(self, name, discount, start_date, end_date):
+        new_promotion = Promotion(name, discount, start_date, end_date)
+        self.promotions.append(new_promotion)
+        print(f"促销活动 {name} 已创建。")
+
+    def add_coupons_to_promotion(self, promotion_name, coupon_codes):
+        for promo in self.promotions:
+            if promo.name == promotion_name:
+                for code in coupon_codes:
+                    promo.add_coupon(code)
+                return
+        print(f"促销活动 {promotion_name} 未找到。")
+
+    def publish_promotion(self, promotion_name):
+        for promo in self.promotions:
+            if promo.name == promotion_name:
+                promo.publish()
+                return
+        print(f"促销活动 {promotion_name} 未找到。")
