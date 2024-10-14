@@ -1,0 +1,28 @@
+ 
+class LogisticsConfig:
+    def __init__(self):
+        self.delivery_areas = {}
+        self.delivery_times = {}
+
+    def add_delivery_area(self, area_name, *sub_areas):
+        self.delivery_areas[area_name] = list(sub_areas)
+        print(f"配送区域 '{area_name}' 已添加，包含子区域：{', '.join(sub_areas)}。")
+
+    def set_delivery_time(self, area_name, delivery_hours):
+        if area_name in self.delivery_areas:
+            self.delivery_times[area_name] = delivery_hours
+            print(f"配送区域 '{area_name}' 的配送时间已设置为：{delivery_hours}。")
+        else:
+            print(f"配送区域 '{area_name}' 未找到，请先添加该配送区域。")
+
+    def get_delivery_time(self, area_name):
+        if area_name in self.delivery_times:
+            return self.delivery_times[area_name]
+        else:
+            print(f"配送区域 '{area_name}' 的配送时间未设置或配送区域不存在。")
+            return None
+
+    def list_delivery_areas(self):
+        for area, sub_areas in self.delivery_areas.items():
+            print(f"配送区域：{area}，子区域：{', '.join(sub_areas)}，配送时间：{self.get_delivery_time(area)}")
+
