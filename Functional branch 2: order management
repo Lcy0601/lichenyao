@@ -1,0 +1,67 @@
+class OrderManager:
+    def __init__(self):
+        self.orders = {}  # 订单信息存储
+
+    def create_order(self, order_id, customer_name, items, status='待处理'):
+        if order_id in self.orders:
+            print(f"订单ID {order_id} 已存在。")
+            return False
+        self.orders[order_id] = {
+            'customer_name': customer_name,
+            'items': items,
+            'status': status
+        }
+        print(f"订单ID {order_id} 已创建。")
+        return True
+
+    def list_orders(self):
+        for order_id, info in self.orders.items():
+            print(f"订单ID: {order_id}, 客户: {info['customer_name']}, 状态: {info['status']}, 商品: {info['items']}")
+
+    def process_order(self, order_id):
+        if order_id not in self.orders:
+            print(f"订单ID {order_id} 不存在。")
+            return False
+        if self.orders[order_id]['status'] == '待处理':
+            self.orders[order_id]['status'] = '处理中'
+            print(f"订单ID {order_id} 正在处理。")
+            return True
+        else:
+            print(f"订单ID {order_id} 当前状态不允许处理。")
+            return False
+
+    def confirm_order(self, order_id):
+        if order_id not in self.orders:
+            print(f"订单ID {order_id} 不存在。")
+            return False
+        if self.orders[order_id]['status'] == '处理中':
+            self.orders[order_id]['status'] = '已确认'
+            print(f"订单ID {order_id} 已确认。")
+            return True
+        else:
+            print(f"订单ID {order_id} 当前状态不允许确认。")
+            return False
+
+    def ship_order(self, order_id):
+        if order_id not in self.orders:
+            print(f"订单ID {order_id} 不存在。")
+            return False
+        if self.orders[order_id]['status'] == '已确认':
+            self.orders[order_id]['status'] = '已发货'
+            print(f"订单ID {order_id} 已发货。")
+            return True
+        else:
+            print(f"订单ID {order_id} 当前状态不允许发货。")
+            return False
+
+    def complete_order(self, order_id):
+        if order_id not in self.orders:
+            print(f"订单ID {order_id} 不存在。")
+            return False
+        if self.orders[order_id]['status'] == '已发货':
+            self.orders[order_id]['status'] = '已完成'
+            print(f"订单ID {order_id} 已完成。")
+            return True
+        else:
+            print(f"订单ID {order_id} 当前状态不允许标记为完成。")
+            return False
