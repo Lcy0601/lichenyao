@@ -1,0 +1,85 @@
+ 
+import socket
+import threading
+import smtplib
+from email.mime.text import MIMEText
+from email.header import Header
+
+class CustomerServiceSystem:
+    def __init__(self, host='localhost', port=12345):
+        self.host = host
+        self.port = port
+        self.clients = {}
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_socket.bind((self.host, self.port))
+        self.server_socket.listen()
+
+    def start(self):
+        print(f"客服系统启动，监听 {self.host}:{self.port}...")
+        threading.Thread(target=self.accept_connections).start()
+
+    def accept_connections(self):
+        while True:
+            client_socket, client_address = self.server_socket.accept()
+            print(f"新连接：{client_address}")
+            threading.Thread(target=self.handle_client, args=(client_socket,)).start()
+
+    def handle_client(self, client_socket):
+        client_name = client_socket.recv(1024).decode('utf-8')
+        self.clients[client_name] = client_socket
+        print(f"客户 {client_name} 已连接。")
+
+        while True:
+            try:
+                message = client_socket.recv(1024).decode('utf-8')
+                if not message:
+                    break
+                print(f"收到来自 {client_name} 的消息：{message}")
+                if message.startswith("MAIL:"):
+                    self.send_email(message[5:])
+                elif message.startswith("CALL:"):
+                    self.initiate_call(message[5:])
+                else:
+                    response = f"客服回复：{message}"
+                    client_socket.send(response.encode('utf-8'))
+            except Exception as e:
+                print(f"与 {client_name} 的连接出现问题：{e}")
+                break
+
+        client_socket.close()
+        del self.clients[client_name]
+        print(f"客户 {client_name} 已断开连接。")
+
+    def send_email(self, email_content):
+        # 请替换为你的邮件服务器设置
+        sender = 'your_email@example.com'
+        password = 'your_password'
+        receiver = 'receiver@example.com'
+        smtp_server = 'smtp.example.com'
+
+        message = MIMEText(email_content, 'plain', 'utf-8')
+        message['From'] = Header("客服系统", 'utf-8')
+        message['To'] = Header("客户", 'utf-8')
+        subject = '客服邮件'
+        message['Subject'] = Header(subject, 'utf-8')
+
+        try:
+            server = smtplib.SMTP(smtp_server, 587)
+            server.starttls()
+            server.login(sender, password)
+            server.sendmail(sender, [receiver], message.as_string())
+            print("邮件发送成功")
+        except smtplib.SMTPException as e:
+            print(f"邮件发送失败：{e}")
+        finally:
+            server.quit()
+
+    def initiate_call(self, phone_number):
+        print(f"模拟电话拨打给 {phone_number}")
+        # 在这里可以集成实际的电话API
+
+# 启动客服系统
+if __name__ == "__main__":
+    system = CustomerServiceSystem()
+    system.start()
+ 
